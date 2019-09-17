@@ -1,0 +1,2 @@
+rootProject.name = 'cs441-cloudsimulator'
+enableFeaturePreview('IMPROVED_POM_SUPPORT')
