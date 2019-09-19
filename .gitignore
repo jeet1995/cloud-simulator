@@ -2,3 +2,4 @@
 /production
 */.gradle
 */cloud-simulator.iml
+*/out
