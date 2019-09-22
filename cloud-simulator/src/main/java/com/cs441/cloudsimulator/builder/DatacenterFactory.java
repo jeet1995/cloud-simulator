@@ -12,9 +12,9 @@ import java.util.List;
 
 import static com.cs441.cloudsimulator.configs.ApplicationConstants.*;
 
-public class DatacenterBuilder {
+public class DatacenterFactory {
 
-    public static Datacenter buildDatacenter(Config config) throws Exception {
+    public static Datacenter createDatacenter(Config config) throws Exception {
 
         List<? extends Config> hostConfigs = config.getConfigList(HOSTS);
         List<Host> hosts = new ArrayList<>();
