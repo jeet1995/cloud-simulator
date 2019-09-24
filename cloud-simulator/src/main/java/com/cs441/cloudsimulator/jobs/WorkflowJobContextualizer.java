@@ -2,11 +2,16 @@ package com.cs441.cloudsimulator.jobs;
 
 
 import com.typesafe.config.Config;
-import org.cloudbus.cloudsim.*;
+import org.cloudbus.cloudsim.brokers.DatacenterBroker;
+import org.cloudbus.cloudsim.cloudlets.Cloudlet;
+import org.cloudbus.cloudsim.cloudlets.CloudletSimple;
+import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletSchedulerTimeShared;
+import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
+import org.cloudbus.cloudsim.vms.Vm;
+import org.cloudbus.cloudsim.vms.VmSimple;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * This class is a representation of the contextualization of a WorkflowJob.
@@ -19,56 +24,38 @@ public class WorkflowJobContextualizer implements JobContextualizer {
     private Config config;
     private List<Cloudlet> cloudlets;
     private List<Vm> vms;
+    private DatacenterBroker datacenterBroker;
 
-    public WorkflowJobContextualizer(Config config) {
+    public WorkflowJobContextualizer(Config config, DatacenterBroker datacenterBroker) {
         this.config = config;
         this.cloudlets = new ArrayList<>();
         this.vms = new ArrayList<>();
+        this.datacenterBroker = datacenterBroker;
     }
 
     @Override
     public void setCloudletProperties() {
 
-        List<? extends Config> activityConfigs = this.config.getConfigList("activities");
 
-        int cloudletLength = 0;
-        int cloudLetFileSize = 0;
-        int cloudLetOutputFileSize = 0;
-
-        UtilizationModel utilizationModel = new UtilizationModelFull();
-
-        for (int i = 0; i < activityConfigs.size(); i++) {
-            cloudletLength += activityConfigs.get(i).getInt("taskLength");
-            cloudLetFileSize += activityConfigs.get(i).getInt("inputFileSize");
-            cloudLetOutputFileSize += activityConfigs.get(i).getInt("outputFileSize");
-        }
-
-        requests = randomizeRequests();
+        this.requests = randomizeRequests();
 
         for (int i = 0; i < requests; i++) {
-            cloudlets.add(new Cloudlet(i, cloudletLength, 0, cloudLetFileSize, cloudLetOutputFileSize, new
-                    UtilizationModelFull(), new UtilizationModelFull(), new UtilizationModelFull()));
+            Cloudlet cloudlet = new CloudletSimple(500, 1, new UtilizationModelFull());
+            this.cloudlets.add(cloudlet);
         }
 
         List<? extends Config> vmConfigs = this.config.getConfigList("vms");
 
         for (int i = 0; i < vmConfigs.size(); i++) {
 
-            this.vms.add(new Vm(i, 0, vmConfigs.get(i).getDouble("mips"), vmConfigs.get(i).getInt("pesNumber"),
-                    vmConfigs.get(i).getInt("ram"), vmConfigs.get(i).getLong("bw"), vmConfigs.get(i).getLong("size"),
-                    vmConfigs.get(i).getString("vmm"), new CloudletSchedulerTimeShared()));
+            this.vms.add(new VmSimple(1000, 1, new CloudletSchedulerTimeShared()));
         }
 
     }
 
     @Override
     public int randomizeRequests() {
-        Random random = new Random();
-        requests = random.nextInt(20);
-
-        if (requests < config.getInt("min.requests"))
-            requests = config.getInt("min.requests");
-
+        requests = 100;
         return requests;
     }
 

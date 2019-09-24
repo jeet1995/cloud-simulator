@@ -1,8 +1,9 @@
 package com.cs441.cloudsimulator.jobs;
 
-import org.cloudbus.cloudsim.Cloudlet;
-import org.cloudbus.cloudsim.DatacenterBroker;
-import org.cloudbus.cloudsim.Vm;
+
+import org.cloudbus.cloudsim.brokers.DatacenterBroker;
+import org.cloudbus.cloudsim.cloudlets.Cloudlet;
+import org.cloudbus.cloudsim.vms.Vm;
 
 import java.util.List;
 
