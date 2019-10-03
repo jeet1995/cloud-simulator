@@ -1,5 +1,6 @@
-/.idea
-/production
+cloud-simulator/.idea
+*/.idea
 */.gradle
+*/build
 */cloud-simulator.iml
 */out

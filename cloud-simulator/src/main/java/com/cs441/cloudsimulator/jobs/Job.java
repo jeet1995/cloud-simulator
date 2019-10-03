@@ -1,9 +1,10 @@
 package com.cs441.cloudsimulator.jobs;
 
-import org.cloudbus.cloudsim.vms.Vm;
 
-import java.util.List;
+import com.typesafe.config.Config;
 
 public interface Job {
-    void submitCloudLetsToVms(List<Vm> vms);
+
+    int randomizeJobRequests(Config config);
+
 }

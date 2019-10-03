@@ -2,25 +2,33 @@ package com.cs441.cloudsimulator.factory;
 
 import com.typesafe.config.Config;
 import org.cloudbus.cloudsim.allocationpolicies.*;
-import org.cloudbus.cloudsim.distributions.ContinuousDistribution;
+import org.cloudbus.cloudsim.allocationpolicies.migration.VmAllocationPolicyMigrationBestFitStaticThreshold;
+
+import static com.cs441.cloudsimulator.configs.ApplicationConstants.*;
 
 public class VmAllocationPolicyFactory implements AbstractFactory<VmAllocationPolicy, Config> {
 
     @Override
-    public VmAllocationPolicy createInstance(Config config) {
-        String allocationPolicy = config.getString("vmAllocationPolicy");
+    public VmAllocationPolicy createInstance(Config config) throws Exception {
 
-        switch (allocationPolicy) {
-        case "SIMPLE":
+        String vmAllocationPolicyType = config.getString(VM_ALLOCATION_POLICY);
+
+        switch (vmAllocationPolicyType) {
+
+
+        case SIMPLE:
             return new VmAllocationPolicySimple();
-        case "BEST_FIT":
+        case BEST_FIT:
             return new VmAllocationPolicyBestFit();
-        case "WORST_FIT":
+        case WORST_FIT:
             return new VmAllocationPolicyWorstFit();
-        case "RANDOM":
-            return new VmAllocationPolicyRandom(ContinuousDistribution.NULL);
+        case "dynamic":
+            return new VmAllocationPolicyRoundRobin();
+
         default:
             return new VmAllocationPolicySimple();
+
         }
     }
+
 }
