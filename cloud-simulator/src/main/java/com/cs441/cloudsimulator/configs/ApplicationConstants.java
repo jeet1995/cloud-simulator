@@ -58,6 +58,8 @@ public class ApplicationConstants {
             ("CLOUDLET_UTILIZATION_MODEL");
     public static final String UTILIZATION_MODEL_FULL = "utilizationModelFull";
     public static final String UTILIZATION_MODEL_STOCHASTIC = "utilizationModelStochastic";
+    public static final int MULTIPLIER_GB_TO_MB  = 1024;
+
 
 
 

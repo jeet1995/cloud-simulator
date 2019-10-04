@@ -119,7 +119,7 @@ public class ResourceManager {
     }
 
     private int getNumMappers(int inputFileSizeInGBs, int inputFileSizePerMapperInMBs) {
-        return inputFileSizeInGBs * 1024 / inputFileSizePerMapperInMBs;
+        return inputFileSizeInGBs * MULTIPLIER_GB_TO_MB / inputFileSizePerMapperInMBs;
     }
 
     private int getNumReducers(int numMappers, int outputFileSizePerMapper, int inputFileSizePerReducer) {

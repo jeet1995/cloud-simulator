@@ -9,7 +9,7 @@ Name: Abhijeet Mohanty
 
 #### Development Environment
 
-The project was developed using the following environment:
+The assignment was developed using the following environment:
 
 - **OS:** macOs Mojave 
 - **IDE:** IntelliJ IDEA Ultimate 2018.1
@@ -18,8 +18,8 @@ The project was developed using the following environment:
  
 #### Assembly details
 
-
-#### Prerequisites
+- Primarily the `build.gradle` file was added to the `cs441-cloudsimulator` module where the respective dependencies are specified along with the `mainRunnerClass`.
+- Then I imported at the project level to include `cs441-cloudsimulator` as an Gradle module.
 
 
 #### Running the application
@@ -37,32 +37,69 @@ The project was developed using the following environment:
 component is mapped to a network topology with the help of a `*.brite` file. Then I proceed to run a map-reduce job to complete my simulation and record results
 arising from introducing variations in VM allocation policies and cloudlet's CPU utilization models which are reported.
 
-### Code flow overview
-
-
-#### Map Reduce Model design
-
-- Here, my model consists of the primary components :
-  
-  `Client` : This component generates a request to submit the map-reduce job. As a part of this request, the `Client` requires
-  virtual machines and cloudlets for the job to be run.
-  
-  `ResourceManager` : This component accepts the request from the client and generates the mappers and reducers required to complete the task with the help of
-  the configuration pertaining to a map-reduce job specified in the `map-reduce-job.conf` file.
-  
-  `JobTracker` : This component resolves a reducer for a given mapper and keep listening to events generates by a mapper. Upon completion of the mapper, it submits
-  a request for the corresponding reducer to be run.
-  
-  `Mapper` : This is the component which extends the `NetworkCloudlet` and has a one to one corresponds with that of a mapper in the map-reduce framework.
-  
-  `Reducer` :  This is the component which extends the `NetworkCloudlet` and has a one to one corresponds with that of a reducer in the map-reduce framework.
-
 
 ### Network topology
 
 - The following topology was created with the help of `network-topology-1.brite`
 
 ![network-topology](images/network-topology.jpg)
+
+- Edge switches 
+
+     Connects all hosts of a datacenter.
+    
+     No. of edge switches = 25
+    
+     No. of ports = 5 
+
+- Aggregate switches
+
+     Connects all edge switches.    
+     
+     No. of aggregate switches = 5
+     
+     No. of ports = 5
+
+- Root switches
+
+    Connects all datacenters
+    
+    No. of root switches = 1
+    
+    No. of ports = 3
+
+- Each simulations runs a total of 3 datacenters where each datacenter has 2 hosts.    
+           
+
+### Code flow overview
+
+#### Code flow 
+
+- `MapReduceJobRunner` : This is the entry point of the application which loads the `cloud-service-providers.conf` to load the 
+ configuration of **datacenters** and the `map-reduce-job.conf` file which loads the config for the **map-reduce** job.
+- **Factory pattern** is used to create various components in the simulation - be it switches, datacenters, hosts etc.
+- `DecoratedCloudletsTableBuilder` : This class is an extension over `CloudletsTableBuilder` for displaying extra parameters
+as far as execution of cloudlets is concerned.
+- `NetworkDatacenterUtils` : This is a utility class to add **root switches** and map **network components** to a network topology. 
+
+
+#### Map Reduce Model design
+
+Here, my model consists of the primary components :
+  
+-  `Client` : This component generates a request to submit the map-reduce job. As a part of this request, the `Client` requires
+  virtual machines and cloudlets for the job to be run.
+  
+-  `ResourceManager` : This component accepts the request from the client and generates the mappers and reducers required to complete the task with the help of
+  the configuration pertaining to a map-reduce job specified in the `map-reduce-job.conf` file.
+  
+-  `JobTracker` : This component resolves a reducer for a given mapper and keep listening to events generates by a mapper. Upon completion of the mapper, it submits
+  a request for the corresponding reducer to be run.
+  
+-  `Mapper` : This is the component which extends the `NetworkCloudlet` and has a one to one corresponds with that of a mapper in the map-reduce framework.
+  
+-  `Reducer` :  This is the component which extends the `NetworkCloudlet` and has a one to one corresponds with that of a reducer in the map-reduce framework.
+
 
 ### VM allocation policies compared
 
@@ -358,11 +395,11 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 
 ### Final inference and understanding
 
-- Upon varying the VM allocation policies, I was not able to see any difference. I feel this is down to the simulator when a cloudlet executes 
-is just a simulation the no. of actual CPU clock cycles is equal for every cloudlet.
+- Upon varying the VM allocation policies there was not any perceptible difference. I feel this is down to the simulator in the sense that when a cloudlet executes 
+ no. of actual CPU clock cycles is equal for every cloudlet.
 - With the help of the stochastic utilization policy, a randomized view of cloudlet utilization generates a real world situation where various VM and cloudlet pair could be behave differently. It could
 mimic context switching for a stream of cloudlets for a specific VM.
-- In an ideal world, choosing a simplistic policy such as the round robin policy would make more sense as every host has an equal chance of getting picked up for allocation.
+- In an ideal world, choosing a simplistic policy such as the round robin policy would make more sense as every host has an equal chance of getting picked up for allocation along with more or less uniform cloudlet length.
 
 
 ### Future improvements
