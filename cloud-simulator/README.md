@@ -26,13 +26,15 @@ The assignment was developed using the following environment:
 - Clone the project and open it up on IntelliJ.
 - Add `cloud-simulator` as a **Gradle** project by navigating to **Project Structure/Modules** in IntelliJ.
 - Navigate to the module **<parent_project>/cloud-simulator**  and then execute the following command :-
-    ```
-    >gradle clean build test
-    ```
     
-    ```
-    >gradle clean build run
-    ```
+ ```
+    > gradle clean build test
+ ```
+    
+ ```
+    > gradle clean build run
+ ```
+
 ### About the application
 
 - In this application, I primarily aim to replicate a real world network of datacenter with switches (root, aggregate and edge switches) such that each 
