@@ -35,6 +35,8 @@ The assignment was developed using the following environment:
     > gradle clean build run
  ```
 
+- NOTE: The execution runs for around 3 to 4 minutes
+
 ### About the application
 
 - In this application, I primarily aim to replicate a real world network of datacenter with switches (root, aggregate and edge switches) such that each 
