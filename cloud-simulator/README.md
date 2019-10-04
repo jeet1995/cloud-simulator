@@ -23,6 +23,7 @@ The assignment was developed using the following environment:
 
 
 #### Running the application
+- Clone the project and open it up on IntelliJ.
 - Add `cloud-simulator` as a **Gradle** project by navigating to **Project Structure/Modules** in IntelliJ.
 - Navigate to the module **<parent_project>/cloud-simulator**  and then execute the following command :-
     ```
