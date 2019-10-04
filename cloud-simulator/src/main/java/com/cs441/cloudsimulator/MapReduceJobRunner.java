@@ -25,6 +25,11 @@ import java.util.List;
 
 import static com.cs441.cloudsimulator.configs.ApplicationConstants.*;
 
+
+/**
+ * This class represents the entry point for my cloud simulator. It primarily runs simulations of map-reduce jobs
+ * of datacenter federations defined in the cloud-service-providers.conf file.
+ */
 public class MapReduceJobRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MapReduceJobRunner.class);
@@ -57,7 +62,7 @@ public class MapReduceJobRunner {
                 networkDatacenters.add(networkDatacenter);
             }
 
-            JobTracker jobTracker = new JobTracker(simulation);
+            JobTracker jobTracker = new JobTracker(simulation, mapReduceJobConfig);
 
             LOGGER.info("Adding root switch to datacenter network {}", (i + 1));
 
@@ -81,11 +86,27 @@ public class MapReduceJobRunner {
         }
     }
 
+
+    /**
+     * This method creates an instance of the @{@link NetworkDatacenter} class
+     *
+     * @param sim    Defines the simulation paramater provided by {@link CloudSim}
+     * @param config Defines the config required to create an instance of @{@link NetworkDatacenter}
+     * @return networkDatacenter
+     */
     private static NetworkDatacenter createNetworkDatacenter(CloudSim sim, Config config) throws Exception {
         AbstractFactory<NetworkDatacenter, Config> networkDatacenterFactory = new NetworkDatacenterFactory(sim, config);
         return networkDatacenterFactory.createInstance(config);
     }
 
+    /**
+     * This method creates an instance of the @{@link NetworkDatacenter} class
+     *
+     * @param datacenterBrokers  List of datacenterBrokers which would submit instances of @{@link NetworkCloudlet}
+     *                           and @{@link NetworkVm} for the map-reduce job to be executed.
+     * @param mapReduceJobConfig Defines the config required to create an instance of @{@link MapReduceJob}
+     * @param jobTracker         Defines the jobTracker for map-reduce jobs submitted by some client.
+     */
     private static void submitJob(List<DatacenterBroker> datacenterBrokers, Config mapReduceJobConfig, JobTracker
             jobTracker) throws Exception {
         for (int j = 0; j < datacenterBrokers.size(); j++) {
@@ -109,6 +130,13 @@ public class MapReduceJobRunner {
         }
     }
 
+    /**
+     * This method displays the simulation results.
+     *
+     * @param datacenterBrokers List of datacenterBrokers which would submit instances of @{@link NetworkCloudlet}
+     *                          and @{@link NetworkVm} for the map-reduce job to be executed.
+     * @param jobTracker        Defines the jobTracker for map-reduce jobs submitted by some client.
+     */
     private static void printSimulationResults(List<DatacenterBroker> datacenterBrokers, JobTracker jobTracker) {
         for (int j = 0; j < datacenterBrokers.size(); j++) {
             new DecoratedCloudletsTableBuilder(datacenterBrokers.get(j).getCloudletFinishedList()).build();

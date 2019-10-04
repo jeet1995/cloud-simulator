@@ -1,5 +1,7 @@
 package com.cs441.cloudsimulator.jobs;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,7 +16,8 @@ public class JobTrackerTest {
 
     public List<Mapper> mappers = new ArrayList<>();
     public List<Reducer> reducers = new ArrayList<>();
-    public JobTracker jobTracker = new JobTracker(new CloudSim());
+    public Config mapReduceJobConfig = ConfigFactory.load("map-reduce-job-test.conf");
+    public JobTracker jobTracker = new JobTracker(new CloudSim(), mapReduceJobConfig);
     public Map<Mapper, Reducer> mapperReducerMap = new HashMap<>();
 
     @Before

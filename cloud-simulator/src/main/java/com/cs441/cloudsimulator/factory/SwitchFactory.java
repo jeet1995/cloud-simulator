@@ -34,27 +34,27 @@ public class SwitchFactory implements AbstractFactory<AbstractSwitch, Config> {
     @Override
     public AbstractSwitch createInstance(Config config) throws Exception {
 
-        String switchType = config.getString("switchType");
+        String switchType = config.getString(SWITCH_TYPE);
 
         switch (switchType) {
 
         case EDGE_SWITCH:
             EdgeSwitch edgeSwitch = new EdgeSwitch(simulation, networkDatacenter);
-            edgeSwitch.setPorts(config.getInt("numPorts"));
-            edgeSwitch.setSwitchingDelay(config.getDouble("switchingDelay"));
-            edgeSwitch.setDownlinkBandwidth(config.getDouble("downlinkBandwidth"));
+            edgeSwitch.setPorts(config.getInt(NUM_PORTS));
+            edgeSwitch.setSwitchingDelay(config.getDouble(SWITCHING_DELAY));
+            edgeSwitch.setDownlinkBandwidth(config.getDouble(DOWNLINK_BANDWIDTH));
             return edgeSwitch;
         case AGGREGATE_SWITCH:
             AggregateSwitch aggregateSwitch = new AggregateSwitch(simulation, networkDatacenter);
-            aggregateSwitch.setPorts(config.getInt("numPorts"));
-            aggregateSwitch.setSwitchingDelay(config.getDouble("switchingDelay"));
-            aggregateSwitch.setDownlinkBandwidth(config.getDouble("downlinkBandwidth"));
+            aggregateSwitch.setPorts(config.getInt(NUM_PORTS));
+            aggregateSwitch.setSwitchingDelay(config.getDouble(SWITCHING_DELAY));
+            aggregateSwitch.setDownlinkBandwidth(config.getDouble(DOWNLINK_BANDWIDTH));
             return aggregateSwitch;
         case ROOT_SWITCH:
             RootSwitch rootSwitch = new RootSwitch(simulation, networkDatacenter);
-            rootSwitch.setPorts(config.getInt("numPorts"));
-            rootSwitch.setSwitchingDelay(config.getDouble("switchingDelay"));
-            rootSwitch.setDownlinkBandwidth(config.getDouble("downlinkBandwidth"));
+            rootSwitch.setPorts(config.getInt(NUM_PORTS));
+            rootSwitch.setSwitchingDelay(config.getDouble(SWITCHING_DELAY));
+            rootSwitch.setDownlinkBandwidth(config.getDouble(DOWNLINK_BANDWIDTH));
             return rootSwitch;
 
         }
