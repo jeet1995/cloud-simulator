@@ -1,5 +1,5 @@
 ## CS 441: Engineering Distributed Objects for Cloud Computing
-Homework 1: A simulation of network datacenters with a particular topology with varying VM allocation policies and cloudlet utilization policies
+Homework 1: A simulation of network datacenters with a particular topology with varying VM allocation policies and cloudlet utilization models
 ---
 Name: Abhijeet Mohanty
 ---
