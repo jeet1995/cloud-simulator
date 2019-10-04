@@ -18,13 +18,13 @@ The assignment was developed using the following environment:
  
 #### Assembly details
 
-- Primarily the `build.gradle` file was added to the `cs441-cloudsimulator` module where the respective dependencies are specified along with the `mainRunnerClass`.
-- Then I imported at the project level to include `cs441-cloudsimulator` as an Gradle module.
+- Primarily the `build.gradle` file was added to the `cloud-simulator` module where the respective dependencies are specified along with the `mainRunnerClass`.
+- The I navigated to the **Project Structure** where I add `cloud-simulator` as a Gradle module and run the respective gradle commands from withing this module.
 
 
 #### Running the application
-
-- Navigate to the module **<parent_project>/cs441-cloudsimulator**  and then execute the following command :-
+- Add `cloud-simulator` as a **Gradle** project by navigating to **Project Structure/Modules** in IntelliJ.
+- Navigate to the module **<parent_project>/cloud-simulator**  and then execute the following command :-
     ```
     >gradle clean build test
     ```
