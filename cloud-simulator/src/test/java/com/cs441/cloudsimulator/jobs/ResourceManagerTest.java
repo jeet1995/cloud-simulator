@@ -20,24 +20,24 @@ public class ResourceManagerTest {
     public void setUp() throws Exception {
 
         CloudSim sim = new CloudSim();
+        mapReduceJobConf = ConfigFactory.load("map-reduce-job-test.conf");
 
 
         DatacenterBroker datacenterBroker = new DatacenterBrokerSimple(sim);
-        JobTracker jobTracker = new JobTracker(sim);
+        JobTracker jobTracker = new JobTracker(sim, mapReduceJobConf);
 
         resourceManager = new ResourceManager(datacenterBroker, jobTracker);
-        mapReduceJobConf = ConfigFactory.load("map-reduce-job-test.conf");
     }
 
 
     @Test
-    public void computeAndCreateMappers() {
+    public void computeAndCreateMappers() throws Exception {
         List<Mapper> mappers = resourceManager.computeAndCreateMappers(7, mapReduceJobConf);
         Assert.assertEquals(7, mappers.size());
     }
 
     @Test
-    public void computeAndCreateReducers() {
+    public void computeAndCreateReducers() throws Exception {
         List<Reducer> reducers = resourceManager.computeAndCreateReducers(9, mapReduceJobConf);
         Assert.assertEquals(9, reducers.size());
     }

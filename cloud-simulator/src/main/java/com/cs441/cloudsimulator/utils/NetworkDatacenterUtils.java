@@ -18,11 +18,26 @@ import java.util.List;
 import static com.cs441.cloudsimulator.configs.ApplicationConstants.BRITE_FILE;
 import static com.cs441.cloudsimulator.configs.ApplicationConstants.NETWORK_TOPOLOGY;
 
+/**
+ * This class is a utility class which configures an instance of @{@link RootSwitch} for instances of
+ *
+ * @{@link NetworkDatacenter}
+ * It also maps instances of @{@link NetworkDatacenter} and @{@link DatacenterBroker} onto a @{@link NetworkTopology}
+ */
+
 public class NetworkDatacenterUtils {
 
     private NetworkDatacenterUtils() {
     }
 
+
+    /**
+     * This method adds a root switch.
+     *
+     * @param networkDatacenters List of network datacenters
+     * @param simulation         The CloudSimPlus simulation entity.
+     * @param config             Config to create a root switch.
+     */
     public static void addRootSwitch(List<NetworkDatacenter> networkDatacenters, CloudSim simulation, Config config)
             throws Exception {
 
@@ -45,9 +60,16 @@ public class NetworkDatacenterUtils {
         }
     }
 
+    /**
+     * This method maps networking components to a network topology.
+     *
+     * @param networkDatacenters  List of network datacenters
+     * @param datacenterBrokers   List of datacenter brokers
+     * @param globalReducerBroker Global reducer broker
+     * @param config              Config to map nodes to *.brite file.
+     */
     public static NetworkTopology mapNetworkConponentToNetworkTopology(List<NetworkDatacenter> networkDatacenters,
-            List<DatacenterBroker> datacenterBrokers, DatacenterBroker globalReducerBroker,
-            Config config) {
+            List<DatacenterBroker> datacenterBrokers, DatacenterBroker globalReducerBroker, Config config) {
 
         NetworkTopology networkTopology = BriteNetworkTopology.getInstance(config.getConfig(NETWORK_TOPOLOGY)
                 .getString(BRITE_FILE));

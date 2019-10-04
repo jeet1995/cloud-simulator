@@ -1,13 +1,15 @@
 package com.cs441.cloudsimulator.utils;
 
-import com.cs441.cloudsimulator.jobs.Mapper;
-import com.cs441.cloudsimulator.jobs.Reducer;
 import org.cloudbus.cloudsim.cloudlets.Cloudlet;
 import org.cloudbus.cloudsim.core.Identifiable;
 import org.cloudsimplus.builders.tables.CloudletsTableBuilder;
 import org.cloudsimplus.builders.tables.TableColumn;
 
 import java.util.List;
+
+/**
+ * This class displays cloudlet execution data in a tabular format.
+ */
 
 public class DecoratedCloudletsTableBuilder extends CloudletsTableBuilder {
     private static final String TIME_FORMAT = "%.0f";

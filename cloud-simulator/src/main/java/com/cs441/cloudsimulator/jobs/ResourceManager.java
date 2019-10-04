@@ -1,11 +1,12 @@
 package com.cs441.cloudsimulator.jobs;
 
+import com.cs441.cloudsimulator.factory.AbstractFactory;
+import com.cs441.cloudsimulator.factory.CloudletUtilizationModelFactory;
 import com.typesafe.config.Config;
 import org.cloudbus.cloudsim.brokers.DatacenterBroker;
 import org.cloudbus.cloudsim.cloudlets.network.CloudletExecutionTask;
 import org.cloudbus.cloudsim.cloudlets.network.CloudletTask;
-import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelDynamic;
-import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelFull;
+import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelAbstract;
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelStochastic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,16 +23,17 @@ import static com.cs441.cloudsimulator.configs.ApplicationConstants.*;
 
 public class ResourceManager {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceManager.class);
     private List<Mapper> mappers;
     private List<Reducer> reducers;
     private JobTracker jobTracker;
     private DatacenterBroker datacenterBroker;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceManager.class);
+    private AbstractFactory<UtilizationModelAbstract, Config> cloudletUtilizationModelFactory;
 
     public ResourceManager(DatacenterBroker datacenterBroker, JobTracker jobTracker) {
         this.datacenterBroker = datacenterBroker;
         this.jobTracker = jobTracker;
+        cloudletUtilizationModelFactory = new CloudletUtilizationModelFactory();
     }
 
     /**
@@ -39,7 +41,7 @@ public class ResourceManager {
      *
      * @param config MapReduceJob config
      */
-    public void executeJob(Config config) {
+    public void executeJob(Config config) throws Exception {
 
         LOGGER.info("Loading properties pertaining to map-reduce job config");
 
@@ -67,9 +69,10 @@ public class ResourceManager {
      * @param config     MapReduceJob config
      * @param numMappers The no. of mappers required for our job
      */
-    public List<Mapper> computeAndCreateMappers(int numMappers, Config config) {
+    public List<Mapper> computeAndCreateMappers(int numMappers, Config config) throws Exception {
 
         List<Mapper> mappers = new ArrayList<>();
+
 
 
         for (int i = 0; i < numMappers; i++) {
@@ -79,11 +82,11 @@ public class ResourceManager {
             mapper.setOutputSize(config.getInt(OUTPUT_FILE_SIZE_PER_MAPPER));
             mapper.setMemory(config.getInt(MEMORY_NEEDED_PER_MAPPER));
             mapper.setFileSize(config.getInt(INPUT_FILE_SIZE_PER_MAPPER));
-            mapper.setUtilizationModel(new UtilizationModelStochastic());
+            mapper.setUtilizationModel(cloudletUtilizationModelFactory.createInstance(config));
             mapper.addOnFinishListener(jobTracker::onMapperFinishListenerSubmitReducer);
             CloudletTask task = new CloudletExecutionTask(mapper.getTasks().size(), config.getInt
                     (TASK_LENGTH_PER_MAPPER));
-            task.setMemory(4000);
+            task.setMemory(config.getInt(MEMORY_PER_MAPPER_TASK));
             mapper.addTask(task);
             mappers.add(mapper);
         }
@@ -95,7 +98,7 @@ public class ResourceManager {
      * @param config      MapReduceJob config
      * @param numReducers The no. of reducers required for our job
      */
-    public List<Reducer> computeAndCreateReducers(int numReducers, Config config) {
+    public List<Reducer> computeAndCreateReducers(int numReducers, Config config) throws Exception {
         List<Reducer> reducers = new ArrayList<>();
 
         for (int i = 0; i < numReducers; i++) {
@@ -104,10 +107,10 @@ public class ResourceManager {
             reducer.setBroker(datacenterBroker);
             reducer.setOutputSize(config.getInt(OUTPUT_FILE_SIZE_PER_REDUCER));
             reducer.setMemory(config.getInt(MEMORY_NEEDED_PER_REDUCER));
-            reducer.setUtilizationModel(new UtilizationModelStochastic());
+            reducer.setUtilizationModel(cloudletUtilizationModelFactory.createInstance(config));
             CloudletTask task = new CloudletExecutionTask(reducer.getTasks().size(), config.getInt
                     (TASK_LENGTH_PER_REDUCER));
-            task.setMemory(4000);
+            task.setMemory(config.getInt(MEMORY_PER_REDUCER_TASK));
             reducer.addTask(task);
             reducers.add(reducer);
         }

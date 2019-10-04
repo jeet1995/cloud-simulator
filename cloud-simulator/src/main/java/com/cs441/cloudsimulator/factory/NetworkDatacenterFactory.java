@@ -2,8 +2,6 @@ package com.cs441.cloudsimulator.factory;
 
 import com.typesafe.config.Config;
 import org.cloudbus.cloudsim.core.CloudSim;
-import org.cloudbus.cloudsim.datacenters.DatacenterCharacteristics;
-import org.cloudbus.cloudsim.datacenters.DatacenterCharacteristicsSimple;
 import org.cloudbus.cloudsim.datacenters.network.NetworkDatacenter;
 import org.cloudbus.cloudsim.hosts.network.NetworkHost;
 import org.cloudbus.cloudsim.network.switches.AbstractSwitch;
@@ -59,7 +57,6 @@ public class NetworkDatacenterFactory implements AbstractFactory<NetworkDatacent
         NetworkDatacenter networkDatacenter = new NetworkDatacenter(simulation, networkHosts, new
                 VmAllocationPolicyFactory().createInstance(config));
 
-        DatacenterCharacteristics datacenterCharacteristics = new DatacenterCharacteristicsSimple(networkDatacenter);
 
         createNetwork(networkDatacenter, networkHosts);
 
