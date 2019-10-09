@@ -1,0 +1,11 @@
+Hi Abhijeet,
+
+Your hw1 is graded.
+
+Your code is well documented and nicely structred, which makes it readable. 
+Your modelling of map-reduce framework is neat.
+
+For your simualtions in Java your total grade for HW1 is 7%.
+
+Thank you,
+Mohammed Siddiq
